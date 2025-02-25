@@ -1,9 +1,13 @@
+----Create an INVOICE database and having following tables. 
+
 mysql> create database invoice;
 Query OK, 1 row affected (0.01 sec)
 
 mysql> use invoice;
 Database changed
 Query OK, 0 rows affected, 1 warning (0.01 sec)y,cname varchar(20),address varchar(20),city varchar(20),phno int(15));
+
+----Product(pid,  pname, price (default 0)) 
 
 create table Product(pid int primary key,pname varchar(20),price decimal(10,2) default 0);
 Query OK, 0 rows affected (0.02 sec)
@@ -16,6 +20,8 @@ mysql> desc Product;
 | pname | varchar(20)   | YES  |     | NULL    |       |
 | price | decimal(10,2) | YES  |     | 0.00    |       |
 +-------+---------------+------+-----+---------+-------+
+
+ -----Customer(id, name, address, city, ph_no) 
 
 
 mysql> create table Customer(cid int primary key,cname varchar(20),address varchar(20),city varchar(20),phno int(15));
@@ -32,6 +38,10 @@ mysql> desc Customer;
 +---------+-------------+------+-----+---------+-------+
 5 rows in set (0.01 sec)
 
+
+-------- Invoice_master(inv_id, cust_id(FK), inv_date) 
+
+
 mysql> create table invoice_master(inv_id int primary key,cust_id int,inv_date date,foreign key(cust_id) References Customer(cid));
 Query OK, 0 rows affected (0.02 sec)
 
@@ -44,6 +54,10 @@ mysql> desc invoice_master;
 | inv_date | date | YES  |     | NULL    |       |
 +----------+------+------+-----+---------+-------+
 3 rows in set (0.00 sec)
+
+
+ ---------Invoice_item(inv_id (FK),  pid(FK), quantity)
+
 
 mysql> create table invoice_item(inv_id int,prid int,quantity int,foreign key(inv_id) References invoice_master(inv_id),foreign key(prid) Refe
 rences Product(pid));
