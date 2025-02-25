@@ -1,0 +1,45 @@
+1. Add a column ‘SSN’ at the first position in the table EMPLOYEE 
+
+ alter table EMPLOYEE add SSN int first;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+   
+   2. Change the data type of the column ‘DOB’  in year the table EMPLOYEE    
+   
+   alter table EMPLOYEE modify column dob year;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+   
+   3. Delete the column ‘emp_id’ the table EMPLOYEE. 
+   
+   mysql> alter table EMPLOYEE drop column emp_id;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+   
+   4. Add  the constraint unique for columns ‘SSN, ‘adhar_no’ the table EMPLOYEE
+   
+  mysql> alter table EMPLOYEE add constraint uc_emp unique(SSN,adhar_no);
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+
+   5. Delete the NULL constraint of ‘age’ in the STUDENT table.
+   
+   alter table student modify age int;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+   
+   6. Change the table name EMPLOYEE as PERSON
+   
+   
+   mysql> rename table EMPLOYEE to PERSON;
+Query OK, 0 rows affected (0.02 sec)
+
+   7. Delete the table STUDENT1.
+   
+   mysql> drop table student1;
+Query OK, 0 rows affected (0.00 sec)
