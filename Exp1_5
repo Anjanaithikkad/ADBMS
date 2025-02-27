@@ -72,3 +72,4 @@ mysql> desc invoice_item;
 | quantity | int  | YES  |     | NULL    |       |
 +----------+------+------+-----+---------+-------+
 3 rows in set (0.00 sec)
+//VERIFIED
