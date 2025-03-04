@@ -62,7 +62,6 @@ mysql> select * from Customer;
 
 
 
-
 -------------------------
 insert into Product values(01,'pen',20),(02,'soap',60),(03,'pencil',10),(04,'sugar',100),(05,'Bedsheet',180);
 Query OK, 5 rows affected (0.01 sec)
