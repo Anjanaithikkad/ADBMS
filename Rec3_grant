@@ -1,0 +1,185 @@
+a) TCL COMMANDS 
+
+
+          1.    Commit
+          2.    Rollback
+          3.    Savepoint
+                  
+
+mysql> set autocommit=off;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into ABC value(106,'Hari');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from ABC;
++------+--------+
+| id   | name   |
++------+--------+
+|  105 | Hudha  |
+|  104 | Nada   |
+|  103 | Anjana |
+|  102 | Soja   |
+|  101 | Sreya  |
+|  106 | Hari   |
++------+--------+
+6 rows in set (0.00 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from ABC;
++------+--------+
+| id   | name   |
++------+--------+
+|  105 | Hudha  |
+|  104 | Nada   |
+|  103 | Anjana |
+|  102 | Soja   |
+|  101 | Sreya  |
++------+--------+
+5 rows in set (0.00 sec)
+
+mysql> insert into ABC value(106,'Hari');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> savepoint s1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into ABC value(107,'Dheeraj');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> savepoint s2;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into ABC value(108,'Dilna');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> savepoint s3;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from ABC;
++------+---------+
+| id   | name    |
++------+---------+
+|  105 | Hudha   |
+|  104 | Nada    |
+|  103 | Anjana  |
+|  102 | Soja    |
+|  101 | Sreya   |
+|  106 | Hari    |
+|  107 | Dheeraj |
+|  108 | Dilna   |
++------+---------+
+8 rows in set (0.00 sec)
+
+mysql> rollback to s2;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from ABC;
++------+---------+
+| id   | name    |
++------+---------+
+|  105 | Hudha   |
+|  104 | Nada    |
+|  103 | Anjana  |
+|  102 | Soja    |
+|  101 | Sreya   |
+|  106 | Hari    |
+|  107 | Dheeraj |
++------+---------+
+7 rows in set (0.00 sec)
+
+mysql> rollback to s1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from ABC;
++------+--------+
+| id   | name   |
++------+--------+
+|  105 | Hudha  |
+|  104 | Nada   |
+|  103 | Anjana |
+|  102 | Soja   |
+
+
+
+
+
+
+b) DCL COMMAND
+ Create two users user1, user2
+
+mysql> use invoice;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+
+mysql> create user 'anjanaa'@'localhost' identified by 'Anjanaa@123';
+Query OK, 0 rows affected (0.01 sec)
+
+
+create user 'Anjanaa'@'localhost' identified by 'ANjanaa@123';
+Query OK, 0 rows affected (0.01 sec)
+
+
+1.              GRANT
+
+Give insert and select privilege to user 1 on customer table in the invoice database.
+
+Give update and delete privilege to user 2 on all tables in the invoice database.
+
+
+
+
+
+mysql> grant all on Customer to 'anjanaa'@'localhost';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> show grants for 'anjanaa'@'localhost';
++-----------------------------------------------------------------------+
+| Grants for anjanaa@localhost                                          |
++-----------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `anjanaa`@`localhost`                           |
+| GRANT ALL PRIVILEGES ON `invoice`.`Customer` TO `anjanaa`@`localhost` |
++-----------------------------------------------------------------------+
+2 rows in set (0.00 sec)
+
+
+
+
+mysql> grant all on *,* to 'Anjanaa'@'localhost';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',* to 'Anjanaa'@'localhost'' at line 1
+mysql> grant all on *.* to 'Anjanaa'@'localhost';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> show grants for 'Anjanaa'@'localhost';
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Grants for Anjanaa@localhost                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, RELOAD, SHUTDOWN, PROCESS, FILE, REFERENCES, INDEX, ALTER, SHOW DATABASES, SUPER, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, REPLICATION SLAVE, REPLICATION CLIENT, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, CREATE USER, EVENT, TRIGGER, CREATE TABLESPACE, CREATE ROLE, DROP ROLE ON *.* TO `Anjanaa`@`localhost`                                                                                                                                                                                                                                                                                                                                                                                     |
+| GRANT APPLICATION_PASSWORD_ADMIN,AUDIT_ABORT_EXEMPT,AUDIT_ADMIN,AUTHENTICATION_POLICY_ADMIN,BACKUP_ADMIN,BINLOG_ADMIN,BINLOG_ENCRYPTION_ADMIN,CLONE_ADMIN,CONNECTION_ADMIN,ENCRYPTION_KEY_ADMIN,FIREWALL_EXEMPT,FLUSH_OPTIMIZER_COSTS,FLUSH_STATUS,FLUSH_TABLES,FLUSH_USER_RESOURCES,GROUP_REPLICATION_ADMIN,GROUP_REPLICATION_STREAM,INNODB_REDO_LOG_ARCHIVE,INNODB_REDO_LOG_ENABLE,PASSWORDLESS_USER_ADMIN,PERSIST_RO_VARIABLES_ADMIN,REPLICATION_APPLIER,REPLICATION_SLAVE_ADMIN,RESOURCE_GROUP_ADMIN,RESOURCE_GROUP_USER,ROLE_ADMIN,SENSITIVE_VARIABLES_OBSERVER,SERVICE_CONNECTION_ADMIN,SESSION_VARIABLES_ADMIN,SET_USER_ID,SHOW_ROUTINE,SYSTEM_USER,SYSTEM_VARIABLES_ADMIN,TABLE_ENCRYPTION_ADMIN,TELEMETRY_LOG_ADMIN,XA_RECOVER_ADMIN ON *.* TO `Anjanaa`@`localhost` |
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+2 rows in set (0.00 sec)
+
+
+
+
+
+
+
+
+2.              REVOKE
+
+Remove delete privilege of user 2.
+|  101 | Sreya  |
+|  106 | Hari   |
++------+--------+
+6 rows in set (0.00 sec)
+
+
+
+
+
+
+
