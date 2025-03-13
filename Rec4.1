@@ -1,0 +1,108 @@
+1.    List all invoice items, avoid duplicates.
+
+
+mysql> select distinct quantity from invoice_item;
++----------+
+| quantity |
++----------+
+|        2 |
++----------+
+1 row in set (0.01 sec)
+
+
+2.    List the invoice details from 1st January 2024 to 31st march 2024
+
+mysql> select * from invoice_master where inv_date>='2024-01-01' and inv_date<='2024-03-31';
++--------+---------+------------+
+| inv_id | cust_id | inv_date   |
++--------+---------+------------+
+|    101 |   10003 | 2024-01-01 |
+|    105 |   10004 | 2024-03-31 |
++--------+---------+------------+
+2 rows in set (0.01 sec)
+
+
+
+3.    List the customer details who not live in ‘tdy’.
+
+mysql> select * from Customer where city!='tdy';
++-------+-------+----------+------------+-----------+
+| cid   | cname | address  | city       | phno      |
++-------+-------+----------+------------+-----------+
+| 10001 | ABC   | abchouse | clt        |  45612378 |
+| 10002 | DEF   | defhouse | ernankulam | 789456123 |
+| 10003 | HIJ   | hijhouse | calicut    | 456789123 |
+| 10004 | KLM   | pqrhouse | knr        | 857496321 |
++-------+-------+----------+------------+-----------+
+4 rows in set (0.00 sec)
+
+
+4.    List the customers who have no phone number.
+
+mysql> select *from Customer where phno is null;
++-------+-------+----------+------+------+
+| cid   | cname | address  | city | phno |
++-------+-------+----------+------+------+
+| 10006 | YUH   | okjhouse | clt  | NULL |
++-------+-------+----------+------+------+
+1 row in set (0.00 sec)
+
+
+
+5.    Display customer names in descending order.
+
+
+mysql> select cname from Customer order by cname desc;
++-------+
+| cname |
++-------+
+| YUH   |
+| KLM   |
+| HIJ   |
+| DEF   |
+| ABC   |
++-------+
+5 rows in set (0.00 sec)
+
+
+6.    Display the customer details sorted in ascending by city and descending by names.
+
+mysql> select * from Customer order by city asc, cname desc;
++-------+-------+----------+------------+-----------+
+| cid   | cname | address  | city       | phno      |
++-------+-------+----------+------------+-----------+
+| 10003 | HIJ   | hijhouse | calicut    | 456789123 |
+| 10006 | YUH   | okjhouse | clt        |      NULL |
+| 10001 | ABC   | abchouse | clt        |  45612378 |
+| 10002 | DEF   | defhouse | ernankulam | 789456123 |
+| 10004 | KLM   | pqrhouse | knr        | 857496321 |
++-------+-------+----------+------------+-----------+
+5 rows in set (0.00 sec)
+
+
+
+7.    Find the customer names who have ‘e’ or ‘a’ in them and at least 3 characters in length
+
+mysql> select cname from Customer where (cname like'%a%'or cname like'%e%') and cname like'___%';
++-------+
+| cname |
++-------+
+| ABC   |
+| DEF   |
++-------+
+2 rows in set (0.00 sec)
+
+
+
+
+8.    List the names of customers their names have ‘b’ in second position.
+
+
+mysql> select cname from Customer where cname like'_b%';
++-------+
+| cname |
++-------+
+| ABC   |
++-------+
+1 row in set (0.00 sec)
+
