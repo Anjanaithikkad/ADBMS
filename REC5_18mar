@@ -1,0 +1,77 @@
+ACCESSING DATABASE:  (SUBQUERY)
+
+1.    List the product name and price of each invoice item. 
+
+
+mysql> select pname,price from Product where pid in(select prid from invoice_item);
++----------+--------+
+| pname    | price  |
++----------+--------+
+| pen      |  30.60 |
+| soap     |  61.20 |
+| pencil   |  10.20 |
+| sugar    | 102.00 |
+| Bedsheet | 183.60 |
++----------+--------+
+5 rows in set (0.00 sec)
+
+
+
+2.    List the product names, only include their purchased quantity more than 3. 
+
+mysql> select(select pname from Product where pid=invoice_item.prid)as pname from invoice_item where quantity > 3;
++----------+
+| pname    |
++----------+
+| Bedsheet |
++----------+
+1 row in set (0.00 sec)
+
+
+3.    Find the product that has no sale. 
+
+mysql> select pname from Product where pid not in (select prid from invoice_item);
++--------+
+| pname  |
++--------+
+| powder |
++--------+
+1 row in set (0.00 sec)
+
+
+4.    List the customer names who purchased the items ‘pen’ and ‘pencil’. 
+
+mysql> select cname from Customer where cid in(select cust_id from invoice_master where inv_id in(select inv_id from invoice_item where prid in(select pid from Product where pname='pen' or pname='pencil')));
++-------+
+| cname |
++-------+
+| HIJ   |
+| DEF   |
++-------+
+2 rows in set (0.00 sec)
+
+
+
+5.    Display the purchased product details of the customer ’xyz’. 
+
+mysql> select * from Product where pid in(select prid from invoice_item where inv_id in(select inv_id from invoice_master where cust_id in(select cid from Customer where cname='HIJ')));
++-----+-------+-------+
+| pid | pname | price |
++-----+-------+-------+
+|   1 | pen   | 30.60 |
++-----+-------+-------+
+1 row in set (0.00 sec)
+
+6.    List the names of all customers who have purchased at least 2 products, make sure that no duplicate names in the result.
+
+mysql> select cname from Customer where cid in(select cust_id from invoice_master where inv_id in (select inv_id from invoice_item group by inv_id having count(inv_id>=2)));
++-------+
+| cname |
++-------+
+| DEF   |
+| HIJ   |
+| KLM   |
++-------+
+3 rows in set (0.00 sec)
+
+
