@@ -74,4 +74,5 @@ mysql> select cname from Customer where cid in(select cust_id from invoice_maste
 +-------+
 3 rows in set (0.00 sec)
 
+//VERIFIED
 
