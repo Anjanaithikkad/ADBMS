@@ -1,0 +1,141 @@
+OPTIMIZING DATABASE: (JOINS)
+1.     List the product name and quantity of invoice items. 
+
+
+
+mysql> select pname,quantity from Product join invoice_item on Product.pid=invoice_item.prid;
++----------+----------+
+| pname    | quantity |
++----------+----------+
+| sugar    |        2 |
+| pen      |        1 |
+| soap     |        1 |
+| pencil   |        2 |
+| Bedsheet |        4 |
++----------+----------+
+5 rows in set (0.00 sec)
+
+
+
+2.    Display invoice details of the transaction dated ’31-01-2022’. 
+
+
+mysql> SELECT Customer.cname,Product.pname,invoice_item.quantity,invoice_master.inv_date FROM invoice_item JOIN invoice_master ON invoice_item.inv_id = invoice_master.inv_id JOIN Customer ON invoice_master.cust_id = Customer.cid JOIN Product ON invoice_item.prid = Product.pid WHERE invoice_master.inv_date = '2023-01-15';
++-------+-------+----------+------------+
+| cname | pname | quantity | inv_date   |
++-------+-------+----------+------------+
+| DEF   | soap  |        1 | 2023-01-15 |
++-------+-------+----------+------------+
+1 row in set (0.00 sec)
+
+
+
+
+3.    Display the customer name, product name, invoice date of purchased item ‘pen’. 
+
+
+
+mysql> SELECT cname, pname, inv_date FROM invoice_item JOIN invoice_master ON invoice_item.inv_id = invoice_master.inv_id JOIN Customer ON invoice_master.cust_id = Customer.cid JOIN Product ON invoice_item.prid = Product.pid WHERE pname = 'pen';
++-------+-------+------------+
+| cname | pname | inv_date   |
++-------+-------+------------+
+| HIJ   | pen   | 2024-01-01 |
++-------+-------+------------+
+1 row in set (0.00 sec)
+
+
+
+
+
+4.    Display all customer details and invoice details must include customer has not purchased items.
+
+
+
+mysql> SELECT Customer.*, invoice_master.* FROM Customer LEFT JOIN invoice_master ON Customer.cid = invoice_master.cust_id;
++-------+-------+----------+------------+-----------+--------+---------+------------+
+| cid   | cname | address  | city       | phno      | inv_id | cust_id | inv_date   |
++-------+-------+----------+------------+-----------+--------+---------+------------+
+| 10001 | ABC   | abchouse | clt        |  45612378 |   NULL |    NULL | NULL       |
+| 10002 | DEF   | defhouse | ernankulam | 789456123 |    103 |   10002 | 2023-02-01 |
+| 10002 | DEF   | defhouse | ernankulam | 789456123 |    102 |   10002 | 2023-01-15 |
+| 10003 | HIJ   | hijhouse | calicut    | 456789123 |    101 |   10003 | 2024-01-01 |
+| 10004 | KLM   | pqrhouse | knr        | 857496321 |    105 |   10004 | 2024-03-31 |
+| 10004 | KLM   | pqrhouse | knr        | 857496321 |    104 |   10004 | 2023-03-01 |
+| 10005 | THG   | klmhouse | clt        |  98765323 |   NULL |    NULL | NULL       |
+| 10006 | YUH   | okjhouse | clt        |      NULL |   NULL |    NULL | NULL       |
+| 10007 | kHG   | pjhhouse | clt        |  98785323 |   NULL |    NULL | NULL       |
++-------+-------+----------+------------+-----------+--------+---------+------------+
+9 rows in set (0.00 sec)
+
+
+
+
+
+ OPTIMIZING DATABASE: (Using Set, arithmetic, logical and special operators)
+
+
+1.Display customer_id, city  who lives either in ‘CLT’ or in ‘TVM’
+
+
+mysql> SELECT cid, city FROM Customer WHERE city IN ('clt', 'knr');
++-------+------+
+| cid   | city |
++-------+------+
+| 10001 | clt  |
+| 10004 | knr  |
+| 10005 | clt  |
+| 10006 | clt  |
+| 10007 | clt  |
++-------+------+
+5 rows in set (0.00 sec)
+
+
+
+2.Display product details with an updated price amount(new price= old price+5rs)
+
+
+mysql> SELECT *, (price + 5) AS new_price FROM Product;
++-----+----------+--------+-----------+
+| pid | pname    | price  | new_price |
++-----+----------+--------+-----------+
+|   1 | pen      |  30.60 |     35.60 |
+|   2 | soap     |  61.20 |     66.20 |
+|   3 | pencil   |  10.20 |     15.20 |
+|   4 | sugar    | 102.00 |    107.00 |
+|   5 | Bedsheet | 183.60 |    188.60 |
+|   6 | powder   |  85.00 |     90.00 |
++-----+----------+--------+-----------+
+6 rows in set (0.01 sec)
+
+
+
+3.Display customer details who doesn’t have phone number and lives in ‘Calicut’ city (use logical operators)
+
+
+mysql> SELECT * FROM Customer WHERE city = 'clt' AND phno IS NULL;
++-------+-------+----------+------+------+
+| cid   | cname | address  | city | phno |
++-------+-------+----------+------+------+
+| 10006 | YUH   | okjhouse | clt  | NULL |
+| 10008 | KML   | kmlhouse | clt  | NULL |
++-------+-------+----------+------+------+
+2 rows in set (0.00 sec)
+
+
+
+
+4.List the product names if it finds any records in the invoice items table has quantity =3 (use special operators)
+
+
+mysql> select pname from Product where pid in(select prid from invoice_item where quantity = 2);
++--------+
+| pname  |
++--------+
+| sugar  |
+| pencil |
++--------+
+2 rows in set (0.00 sec)
+
+
+
+
