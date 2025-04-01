@@ -134,3 +134,4 @@ mysql> select * from v1;
 |     4 | Anjana | Owner |  56000 |
 +-------+--------+-------+--------+
 1 row in set (0.00 sec)
+//VERIFIED
