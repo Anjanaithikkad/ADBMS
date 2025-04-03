@@ -1,0 +1,110 @@
+ PL/SQL PROGRAMS- STORED PROCEDURES 
+
+1.      Create a procedure to display all tables in the invoice database. 
+
+
+mysql> create procedure full()
+    -> begin
+    -> select * from Product;
+    -> select * from Customer;
+    -> select * from invoice_item;
+    -> select * from invoice_master;
+    -> end//
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+mysql> call full()//
++-----+----------+--------+
+| pid | pname    | price  |
++-----+----------+--------+
+|   1 | pen      |  30.60 |
+|   2 | soap     |  61.20 |
+|   3 | pencil   |  10.20 |
+|   4 | sugar    | 102.00 |
+|   5 | Bedsheet | 183.60 |
+|   6 | powder   |  85.00 |
++-----+----------+--------+
+6 rows in set (0.00 sec)
+
++-------+-------+----------+------------+-----------+
+| cid   | cname | address  | city       | phno      |
++-------+-------+----------+------------+-----------+
+| 10001 | ABC   | abchouse | clt        |  45612378 |
+| 10002 | DEF   | defhouse | ernankulam | 789456123 |
+| 10003 | HIJ   | hijhouse | calicut    | 456789123 |
+| 10004 | KLM   | pqrhouse | knr        | 857496321 |
+| 10005 | THG   | klmhouse | clt        |  98765323 |
+| 10006 | YUH   | okjhouse | clt        |      NULL |
+| 10007 | kHG   | pjhhouse | clt        |  98785323 |
+| 10008 | KML   | kmlhouse | clt        |      NULL |
++-------+-------+----------+------------+-----------+
+8 rows in set (0.01 sec)
+
++--------+------+----------+
+| inv_id | prid | quantity |
++--------+------+----------+
+|    104 |    4 |        2 |
+|    101 |    1 |        1 |
+|    102 |    2 |        1 |
+|    103 |    3 |        2 |
+|    105 |    5 |        4 |
++--------+------+----------+
+5 rows in set (0.01 sec)
+
++--------+---------+------------+
+| inv_id | cust_id | inv_date   |
++--------+---------+------------+
+|    101 |   10003 | 2024-01-01 |
+|    102 |   10002 | 2023-01-15 |
+|    103 |   10002 | 2023-02-01 |
+|    104 |   10004 | 2023-03-01 |
+|    105 |   10004 | 2024-03-31 |
++--------+---------+------------+
+5 rows in set (0.01 sec)
+
+Query OK, 0 rows affected, 1 warning (0.01 sec)
+
+
+
+
+
+2.      Create a procedure to find greatest of 3 numbers.
+
+
+
+mysql> create procedure great(a int,b int) begin declare x,y int; set x=a; set y=b; if x>y then select x as 'Greater'; else select y as 'Greater'; end if; end//
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call great(12,24)//
++---------+
+| Greater |
++---------+
+|      24 |
++---------+
+
+
+
+3.      Create a procedure to display invoice details of a particular customer.
+
+
+
+
+mysql> create procedure Cust_detail(N varchar(20)) begin select Customer.cname,invoice_master.*,Product.pname,invoice_item.prid,invoice_item.qua
+ntity from invoice_item join invoice_master on invoice_master.inv_id=invoice_item.inv_id join Product on Product.pid=invoice_item.prid join Cust
+omer on Customer.cid=invoice_master.cust_id where Customer.cname=N; end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call Cust_detail('DEF')
+    -> //
++-------+--------+---------+------------+--------+------+----------+
+| cname | inv_id | cust_id | inv_date   | pname  | prid | quantity |
++-------+--------+---------+------------+--------+------+----------+
+| DEF   |    102 |   10002 | 2023-01-15 | soap   |    2 |        1 |
+| DEF   |    103 |   10002 | 2023-02-01 | pencil |    3 |        2 |
++-------+--------+---------+------------+--------+------+----------+
+2 rows in set (0.01 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+
+
+
