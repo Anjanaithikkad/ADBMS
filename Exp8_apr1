@@ -67,7 +67,7 @@ Query OK, 0 rows affected, 1 warning (0.01 sec)
 
 
 
-2.      Create a procedure to find greatest of 3 numbers.
+2.      Create a procedure to find greatest of 2 numbers.
 
 
 
@@ -111,4 +111,4 @@ Query OK, 0 rows affected (0.01 sec)
 
 
 
-//VERIFIED
+//RESUBMIT last one
