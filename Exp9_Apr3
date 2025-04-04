@@ -18,3 +18,4 @@ mysql> SELECT pname,price_range(price) AS price_range FROM Product//
 | powder   | high        |
 +----------+-------------+
 6 rows in set (0.00 sec)
+//VERIFIED
