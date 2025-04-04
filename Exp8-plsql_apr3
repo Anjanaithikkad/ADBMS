@@ -106,5 +106,5 @@ mysql> call Cust_detail('DEF')
 Query OK, 0 rows affected (0.01 sec)
 
 
-
+//VERIFIED
 
