@@ -1,0 +1,52 @@
+1.      Create a trigger to handle updates to the customer table. 
+
+mysql> desc Cst $$
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| cid     | int         | YES  |     | NULL    |       |
+| cname   | varchar(20) | YES  |     | NULL    |       |
+| address | varchar(20) | YES  |     | NULL    |       |
+| city    | varchar(20) | YES  |     | NULL    |       |
+| phno    | int         | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> create trigger c_trigger after update on Customer for each row begin insert into Cst set cid=old.cid,cname=old.cname,address=old.address,city=old.city,phno=old.phno;end $$
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> update Customer set city="Idukki" where cid=10006 $$
+Query OK, 0 rows affected (0.01 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+mysql> select * from Cst $$
++-------+-------+----------+--------+------+
+| cid   | cname | address  | city   | phno |
++-------+-------+----------+--------+------+
+| 10006 | YUH   | okjhouse | Idukki | NULL |
++-------+-------+----------+--------+------+
+1 row in set (0.00 sec)
+
+2.      Create a trigger to handle inserts to the product relation ( if price < 5 the set price to 10).
+
+
+mysql> create trigger p_trig before insert on Product for each row begin if new.price<5 then set new.price=10; end if; end $$
+Query OK, 0 rows affected (0.01 sec)
+
+
+
+mysql> select * from Product $$
++-----+----------+--------+
+| pid | pname    | price  |
++-----+----------+--------+
+|   1 | pen      |  30.60 |
+|   2 | soap     |  61.20 |
+|   3 | pencil   |  10.20 |
+|   4 | sugar    | 102.00 |
+|   5 | Bedsheet | 183.60 |
+|   6 | powder   |  85.00 |
+|   7 | Eracer   |  10.00 |
++-----+----------+--------+
+7 rows in set (0.00 sec)
+
+
