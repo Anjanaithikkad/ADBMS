@@ -1,0 +1,100 @@
+1.      Write a MongoDB query to sort customer details in ascending order of their name.
+
+
+
+INVOICE> db.CUSTOMER.find().sort({ cname: 1 })
+[
+  {
+    _id: ObjectId('67fe26b95517ba78d2ef634b'),
+    cid: '1001',
+    cname: 'Anjana',
+    city: 'Banglore',
+    phno: '7012577731'
+  },
+  {
+    _id: ObjectId('67fe2c135517ba78d2ef6353'),
+    cid: '1003',
+    cname: 'Hari',
+    city: 'Tvm',
+    phno: '9458794623'
+  },
+  {
+    _id: ObjectId('67fe27605517ba78d2ef634e'),
+    cid: '1004',
+    cname: 'Neena',
+    city: 'Ekm',
+    phno: '9145789632'
+  },
+  {
+    _id: ObjectId('67fe27245517ba78d2ef634c'),
+    cid: '1002',
+    cname: 'Sharan',
+    city: 'Ktym',
+    phno: '9496727674'
+  }
+]
+
+
+
+
+2.      Write a MongoDB query to count number of customers in each city.
+
+
+INVOICE> db.CUSTOMER.aggregate([{$group:{_id:"$city",CUSTOMERCount:{$sum:1}}}])
+[
+  { _id: 'Banglore', CUSTOMERCount: 1 },
+  { _id: 'Ktym', CUSTOMERCount: 1 },
+  { _id: 'Ekm', CUSTOMERCount: 1 },
+  { _id: 'Tvm', CUSTOMERCount: 1 }
+]
+
+
+
+
+3.      Write a MongoDB query to find minimum and maximum age in each city.
+
+INVOICE> db.CUSTOMER.aggregate([ { $group: { _id: "$city", minAge: { $min: "$age" }, maxAge: { $max: "$age" } } }] )
+[
+  { _id: 'Ekm', minAge: 27, maxAge: 27 },
+  { _id: 'Banglore', minAge: 20, maxAge: 20 },
+  { _id: 'Ktym', minAge: 22, maxAge: 25 },
+  { _id: 'Tvm', minAge: 18, maxAge: 31 }
+]
+
+
+
+4.      write a mongoDB query using $match stage to retrieve all customer documents whose customer_name starts with the letter "S".
+
+
+
+
+INVOICE> db.CUSTOMER.aggregate([{ $match: { cname: { $regex: "^S" } } }] )
+[
+  {
+    _id: ObjectId('67fe27245517ba78d2ef634c'),
+    cid: '1002',
+    cname: 'Sharan',
+    city: 'Ktym',
+    phno: '9496727674',
+    age: 25
+  }
+]
+
+
+
+
+5.      Write a query using $lookup to join CUSTOMER and PRODUCT collections and display only customer name, product name, and price.
+
+
+
+INVOICE> db.CUSTOMER.aggregate([ { $lookup: { from: "PRODUCT", localField: "pid", foreignField: "pid", as: "productDetails" } }, { $unwind: "$productDetails" }, { $project: { _id: 0, cname: 1, pname: "$productDetails.pname", price: "$productDetails.price" } }] )
+[
+  { cname: 'Anjana', pname: 'Soap', price: 45 },
+  { cname: 'Sharan', pname: 'Surf Excel', price: 60 },
+  { cname: 'Neena', pname: 'Scale', price: 5 },
+  { cname: 'Hari', pname: 'Bedsheet', price: 100 },
+  { cname: 'Geetha', pname: 'Soap', price: 45 },
+  { cname: 'Ravi', pname: 'Surf Excel', price: 60 }
+]
+
+
