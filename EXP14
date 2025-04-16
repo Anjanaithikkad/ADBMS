@@ -98,3 +98,4 @@ INVOICE> db.CUSTOMER.aggregate([ { $lookup: { from: "PRODUCT", localField: "pid"
 ]
 
 
+//VERIFIED
